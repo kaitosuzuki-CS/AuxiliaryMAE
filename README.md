@@ -56,7 +56,6 @@ AuxiliaryMAE/
   - `numpy`: Numerical operations.
   - `pyyaml`: Configuration management.
   - `tqdm`: Progress bars.
-  - `matplotlib`: Visualization (implied dependency).
 
 ## Application Info
 
