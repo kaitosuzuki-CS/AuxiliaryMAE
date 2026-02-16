@@ -1,0 +1,17 @@
+seed: 42
+num_epochs: 100
+checkpoints_dir: "checkpoints"
+checkpoints_freq: 10
+loss: null
+optimizer:
+  lr: 1e-3
+  betas: [0.9, 0.999]
+  weight_decay: 1e-5
+early_stopping:
+  patience: 10
+  tol: 0.001
+scheduler:
+  warmup_epochs: 10
+data:
+  train_bs: 128
+  val_bs: 128

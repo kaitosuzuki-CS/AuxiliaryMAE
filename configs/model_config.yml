@@ -1,0 +1,19 @@
+mask_ratio: 0.75
+encoder:
+  patch_size: [16, 16]
+  channels: 13
+  max_len: 17
+  embed_dim: 256
+  hidden_dim: 512
+  num_heads: 8
+  num_layers: 6
+  dropout: 0.1
+decoder:
+  patch_size: [16, 16]
+  channels: 13
+  max_len: 17
+  embed_dim: 256
+  hidden_dim: 512
+  num_heads: 8
+  num_layers: 6
+  dropout: 0.1
