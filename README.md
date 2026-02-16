@@ -19,6 +19,7 @@ AuxiliaryMAE is a research project implementing a Masked Autoencoder (MAE) with 
 The core of this project is the `FactorizedAttentionViT`, which splits the processing into an encoder and a decoder. The model employs a random masking strategy to mask a high percentage of the input data (default 75%) and tasks the model with reconstructing the missing parts. This approach encourages the model to learn robust and generalized representations of the data.
 
 Key features include:
+
 - **Masked Autoencoder Architecture**: Efficient self-supervised learning by reconstructing masked patches.
 - **Factorized Attention ViT**: Specialized Transformer backbone.
 - **Configurable Design**: extensive use of YAML configuration files for model hyperparameters and training settings.
@@ -51,11 +52,11 @@ AuxiliaryMAE/
 - **Language**: Python 3.x
 - **Deep Learning Framework**: PyTorch
 - **Libraries**:
-    - `transformers`: For optimization schedules.
-    - `numpy`: Numerical operations.
-    - `pyyaml`: Configuration management.
-    - `tqdm`: Progress bars.
-    - `matplotlib`: Visualization (implied dependency).
+  - `transformers`: For optimization schedules.
+  - `numpy`: Numerical operations.
+  - `pyyaml`: Configuration management.
+  - `tqdm`: Progress bars.
+  - `matplotlib`: Visualization (implied dependency).
 
 ## Application Info
 
@@ -71,8 +72,9 @@ The application is designed as a Command Line Interface (CLI) tool. It uses `arg
 ### Installation with Conda
 
 1.  **Clone the repository:**
+
     ```bash
-    git clone <repository_url>
+    git clone https://github.com/kaitosuzuki-CS/AuxiliaryMAE.git
     cd AuxiliaryMAE
     ```
 
