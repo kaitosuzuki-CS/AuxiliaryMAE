@@ -78,15 +78,10 @@ The application is designed as a Command Line Interface (CLI) tool. It uses `arg
     ```
 
 2.  **Create and activate the environment:**
-    You can create the environment directly from the provided `requirements.txt` file (if compatible) or create a fresh environment and install dependencies.
-
     ```bash
-    # Create a new environment
-    conda create -n auxmae python=3.10
-    conda activate auxmae
-
-    # Install dependencies
-    pip install -r requirements.txt
+    # Create a new environment and install dependencies from requirements.txt
+    conda create -n <env_name> python=3.10 --file requirements.txt
+    conda activate <env_name>
     ```
 
 ### Usage
