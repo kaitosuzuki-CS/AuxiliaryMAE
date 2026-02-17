@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import torch
 import torch.nn as nn
@@ -9,6 +10,8 @@ from transformers import get_cosine_schedule_with_warmup
 
 from model.mae import FactorizedAttentionViT
 from utils.misc import EarlyStopping
+
+parent_dir = Path(__file__).resolve().parent
 
 
 class AuxiliaryMAE:
@@ -42,7 +45,9 @@ class AuxiliaryMAE:
             self.warmup_epochs = int(self.scheduler_hps.warmup_epochs)
 
         self.num_epochs = int(self._train_hps.num_epochs)
-        self.checkpoints_dir = str(self._train_hps.checkpoints_dir)
+        self.checkpoints_dir = os.path.join(
+            parent_dir, str(self._train_hps.checkpoints_dir)
+        )
         self.checkpoints_freq = int(self._train_hps.checkpoints_freq)
 
     def _init_training_scheme(self):
