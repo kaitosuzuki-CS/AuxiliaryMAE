@@ -50,15 +50,15 @@ class EncoderEmbedding(nn.Module):
         h = np.ceil(H / self.patch_h) * self.patch_h
         w = np.ceil(W / self.patch_w) * self.patch_w
 
-        pad_h = int(self.patch_w * h - H)
-        pad_w = int(self.patch_h * w - W)
+        pad_h = int(h - H)
+        pad_w = int(w - W)
 
         if pad_h > 0:
-            pad_tensor = self.pad_value.expand(B, C, pad_h, W + pad_w)
+            pad_tensor = self.pad_value.expand(B, C, pad_h, W)
             x = torch.cat([x, pad_tensor], dim=2)
 
         if pad_w > 0:
-            pad_tensor = self.pad_value.expand(B, C, H, pad_w)
+            pad_tensor = self.pad_value.expand(B, C, H + pad_h, pad_w)
             x = torch.cat([x, pad_tensor], dim=3)
 
         return x
