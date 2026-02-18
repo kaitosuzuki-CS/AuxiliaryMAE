@@ -2,7 +2,7 @@
 
 ## Introduction
 
-AuxiliaryMAE is a research project implementing a Masked Autoencoder (MAE) with a Factorized Attention Vision Transformer (ViT) architecture. This project aims to provide a flexible and configurable framework for self-supervised learning on high-dimensional data, utilizing an encoder-decoder structure to reconstruct masked input patches.
+AuxiliaryMAE is a PyTorch implementation of a Masked Autoencoder (MAE) utilizing a Factorized Attention Vision Transformer (ViT) architecture. This project is designed for self-supervised learning on image data, employing a high masking ratio strategy to learn robust feature representations.
 
 ## Table of Contents
 
@@ -12,62 +12,71 @@ AuxiliaryMAE is a research project implementing a Masked Autoencoder (MAE) with 
 - [Tech Stack](#tech-stack)
 - [Application Info](#application-info)
 - [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
 - [Project Files](#project-files)
 
 ## Project Overview
 
-The core of this project is the `FactorizedAttentionViT`, which splits the processing into an encoder and a decoder. The model employs a random masking strategy to mask a high percentage of the input data (default 75%) and tasks the model with reconstructing the missing parts. This approach encourages the model to learn robust and generalized representations of the data.
+The core of this project is the `FactorizedAttentionViT`, which splits the image into patches, masks a significant portion of them (default 75%), and trains the model to reconstruct the missing pixels. This approach encourages the model to learn high-level semantic understanding of the visual data.
 
-Key features include:
+Key features:
 
-- **Masked Autoencoder Architecture**: Efficient self-supervised learning by reconstructing masked patches.
-- **Factorized Attention ViT**: Specialized Transformer backbone.
-- **Configurable Design**: extensive use of YAML configuration files for model hyperparameters and training settings.
-- **Robust Training Loop**: Includes features like early stopping, learning rate scheduling (Cosine with Warmup), and automatic checkpointing.
+- **Masked Autoencoder (MAE)** framework.
+- **Factorized Attention** mechanism in the Vision Transformer.
+- Configurable Encoder/Decoder architecture via YAML files.
+- Training pipeline with early stopping, checkpointing, and learning rate scheduling.
 
 ## Project Structure
 
 ```
 AuxiliaryMAE/
-├── .gitignore
-├── main.py
-├── requirements.txt
-├── train.py
-├── configs/
-│   ├── model_config.yml
-│   └── train_config.yml
-├── model/
-│   ├── mae.py
-│   ├── blocks/
-│   ├── components/
-│   ├── layers/
-│   └── models/
-└── utils/
-    ├── dataset.py
-    └── misc.py
+├── configs/                 # Configuration files
+│   ├── model_config.yml     # Model hyperparameters (layers, dim, heads, etc.)
+│   └── train_config.yml     # Training hyperparameters (epochs, lr, batch size)
+├── model/                   # Model source code
+│   ├── mae.py               # Main FactorizedAttentionViT model and masking logic
+│   ├── blocks/              # Encoder/Decoder blocks
+│   ├── components/          # Embeddings and helper layers
+│   ├── layers/              # Layer definitions
+│   └── models/              # Encoder and Decoder implementations
+├── utils/                   # Utility scripts
+│   ├── dataset.py           # Dataset loading and processing
+│   └── misc.py              # Miscellaneous helpers (loading configs, seeding)
+├── main.py                  # Entry point for the application
+├── train.py                 # Training engine (AuxiliaryMAE class)
+├── environment.yml          # Conda environment definition
+└── requirements.txt         # Pip requirements
 ```
 
 ## Tech Stack
 
-- **Language**: Python 3.x
-- **Deep Learning Framework**: PyTorch
-- **Libraries**:
-  - `transformers`: For optimization schedules.
-  - `numpy`: Numerical operations.
-  - `pyyaml`: Configuration management.
+- **Language:** Python
+- **Deep Learning Framework:** PyTorch
+- **Libraries:**
+  - `transformers` (for schedulers)
+  - `numpy`
+  - `pyyaml` (configuration)
 
 ## Application Info
 
-The application is designed as a Command Line Interface (CLI) tool. It uses `argparse` to handle user inputs for configuration paths. The training process creates checkpoints and logs loss metrics to the console.
+The model operates by:
+
+1.  **Patch Embeddings:** Splitting input images into fixed-size patches.
+2.  **Random Masking:** Randomly masking a large percentage of these patches (e.g., 75%).
+3.  **Encoding:** Processing only the visible patches through a Factorized Attention Encoder.
+4.  **Decoding:** Reconstructing the original image patches from the latent representation and mask tokens.
+5.  **Loss Calculation:** Computing the L1 loss between the predicted and original pixel values for the masked patches.
 
 ## Getting Started
 
 ### Prerequisites
 
-- Anaconda or Miniconda installed on your system.
-- CUDA-enabled GPU is recommended for training.
+- Python 3.10+
+- CUDA-compatible GPU (recommended for training)
 
-### Installation with Conda
+### Installation
 
 1.  **Clone the repository:**
 
@@ -76,30 +85,43 @@ The application is designed as a Command Line Interface (CLI) tool. It uses `arg
     cd AuxiliaryMAE
     ```
 
-2.  **Create and activate the environment:**
+2.  **Set up the environment:**
+
+    **Option A: Using Conda (Recommended)**
+
     ```bash
-    # Create a new environment and install dependencies from requirements.txt
-    conda create -n <env_name> python=3.10 --file requirements.txt
-    conda activate <env_name>
+    conda env create -f environment.yml
+    conda activate auxiliarymae
     ```
 
-### Usage
+    **Option B: Using Pip**
+
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    pip install -r requirements.txt
+    ```
+
+## Usage
 
 To start training the model, run the `main.py` script. You can specify custom configuration files if needed.
 
 ```bash
-# Run with default configurations
-python main.py
-
-# Run with specific config files
 python main.py --model-config-path configs/model_config.yml --train-config-path configs/train_config.yml
 ```
 
+**Note:** Ensure your `train_config.yml` or the loading logic in `utils/dataset.py` points to your actual dataset paths.
+
 ## Project Files
 
-- **`main.py`**: The entry point of the application. It parses command-line arguments, loads configurations, initializes the dataset and model, and starts the training process.
-- **`train.py`**: Contains the `AuxiliaryMAE` class, which manages the training lifecycle. It handles the optimizer, scheduler, early stopping, training loop, validation loop, and saving checkpoints.
-- **`model/mae.py`**: Defines the `FactorizedAttentionViT` class. This is the core model that orchestrates the encoder and decoder, performs random masking of the input, and calculates the reconstruction.
-- **`configs/*.yml`**: YAML files defining the hyperparameters for the model architecture (`model_config.yml`) and the training process (`train_config.yml`).
-- **`utils/dataset.py`**: Contains the logic for loading and preprocessing the dataset.
-- **`utils/misc.py`**: Helper functions for loading configurations, setting random seeds, and other miscellaneous tasks.
+- **`main.py`**: The CLI entry point. It parses arguments, loads configurations, and initiates the training process.
+- **`train.py`**: Contains the `AuxiliaryMAE` class, which manages the training loop, validation, loss calculation, optimization, and checkpointing.
+- **`model/mae.py`**: Defines the `FactorizedAttentionViT` class. This file contains the logic for random masking (`random_masking`), the forward pass for the encoder (`forward_encoder`), and the decoder (`forward_decoder`).
+- **`model/blocks/`**: Contains the building blocks for the encoder and decoder, such as `encoder_block.py` and `decoder_block.py`.
+- **`model/components/`**: Houses shared components like embedding layers (`embeddings.py`) and other foundational layers (`layers.py`).
+- **`model/layers/`**: Defines specific transformer layers, including `encoder_layer.py` and `decoder_layer.py`.
+- **`model/models/`**: Contains the top-level `Encoder` and `Decoder` module implementations.
+- **`utils/dataset.py`**: Handles data loading and dataset creation. You may need to modify this or your config to point to your specific data source.
+- **`utils/misc.py`**: Provides miscellaneous utility functions, such as `load_config` for YAML files and `set_seeds` for reproducibility.
+- **`configs/model_config.yml`**: Defines the structural parameters of the model (embedding dimensions, number of heads, depth, patch size).
+- **`configs/train_config.yml`**: Controls training parameters like learning rate, batch size, epochs, and optimization settings.
