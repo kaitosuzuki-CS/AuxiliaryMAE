@@ -55,7 +55,6 @@ AuxiliaryMAE/
   - `transformers`: For optimization schedules.
   - `numpy`: Numerical operations.
   - `pyyaml`: Configuration management.
-  - `tqdm`: Progress bars.
 
 ## Application Info
 
