@@ -57,7 +57,6 @@ class EarlyStopping:
 
 
 def set_seeds(hps):
-    # Set seeds for reproducibility.
     seed = hps.seed
     np.random.seed(seed)
     torch.manual_seed(seed)
