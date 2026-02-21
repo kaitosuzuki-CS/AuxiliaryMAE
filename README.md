@@ -2,7 +2,7 @@
 
 ## Introduction
 
-AuxiliaryMAE is a PyTorch implementation of a Masked Autoencoder (MAE) utilizing a Factorized Attention Vision Transformer (ViT) architecture. This project is designed for self-supervised learning on image data, employing a high masking ratio strategy to learn robust feature representations.
+AuxiliaryMAE is a PyTorch implementation of a Masked Autoencoder (MAE) utilizing a Factorized Attention Vision Transformer (ViT) architecture. This project is designed for self-supervised learning on multi-channel vision data, employing a high masking ratio strategy to learn robust feature representations.
 
 ## Table of Contents
 
